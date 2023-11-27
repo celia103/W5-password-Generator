@@ -90,17 +90,80 @@ var upperCasedCharacters = [
 
 // Function to prompt user for password options
 function getPasswordOptions() {
+  var length = parseInt(prompt("Enter the length of password (between 8 - 128 characters"));
+  
+  if (length < 8 || length > 128) {
+    alert ("Invalid. The password should between 8 - 128 characters.");
+    return getPasswordOptions();
+  } else if (isNaN(length)) {
+    alert ("Please enter valid number.");
+    return getPasswordOptions();
+  } else {
+    alert ("The password length is " + length);
+  }
+
+  let includeLowercase = confirm("Do you want to include lowercase letter(s) in your password?");
+
+  if (includeLowercase) {
+    alert ("Include lowercase letter(s).");
+  } else {
+    alert ("Not include lowercase letter.");
+  }
+
+  let includeUppercase = confirm("Do you want to include uppercase letter(s) in your password?");
+
+  if (includeUppercase) {
+    alert ("Include uppercase letter(s).");
+  } else {
+    alert ("Not include uppercase letter.");
+  } 
+
+  let includeNumeric = confirm("Do you want to include numeric character(s) in your passoword?");
+
+  if (includeNumeric) {
+    alert ("Include numberic character(s).");
+  } else {
+    alert ("Not include numberic character.");
+  }
+
+  let includeSpecial = confirm("Do you want to include special character(s) in your password?");
+
+  if (includeSpecial) {
+    alert ("Include special character(s).");
+  } else {
+    alert ("Not include special character.");
+  }
+
+  if (includeLowercase == false && includeUppercase == false && includeNumeric == false && includeSpecial == false) {
+    alert ("Please choose at least 1 character type.");
+    return getPasswordOptions();
+  } else {
+    return {includeLowercase, includeUppercase, includeNumeric, includeSpecial, length};
+  }
 
 }
 
 // Function for getting a random element from an array
 function getRandom(arr) {
-
+  var random = Math.floor(Math.random() * arr.length);
+  return arr[random];
 }
 
 // Function to generate password with user input
 function generatePassword() {
+  var passwordOptions = getPasswordOptions();
+  
+  const characterType = [];
+  if (passwordOptions.includeLowercase) characterType.push(...lowerCasedCharacters);
+  if (passwordOptions.includeUppercase) characterType.push(...upperCasedCharacters);
+  if (passwordOptions.includeNumeric) characterType.push(...numericCharacters);
+  if (passwordOptions.includeSpecial) characterType.push(...specialCharacters);
 
+  let password = "";
+  for (let i = 0; i < passwordOptions.length; i++) {
+    password += getRandom(characterType);
+  }
+  return password;
 }
 
 // Get references to the #generate element
